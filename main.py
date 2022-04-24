@@ -1,9 +1,6 @@
 def starting_position(positions_a, positions_b, m):
-    if round(float(positions_a)) != float(positions_a) or round(float(positions_b)) != float(positions_b):
-        print("Invalid dimensions!")
-
-    if float(positions_a) < 1 or float(positions_b) < 1 or float(positions_a) > 8 or float(positions_b) > 8:
-        print("Invalid dimensions!")
+    int(positions_a), int(positions_b)
+    assert float(positions_a) > 0 and float(positions_b) > 0, "а и б должно быть больше 0"
 
     m[len(m) - int(positions_b)][int(positions_a) - 1] = "X"
     print(" " + "-" * 2 * len(m[0]) + "---")
@@ -20,15 +17,14 @@ def starting_position(positions_a, positions_b, m):
 
 
 def starting_board(board_a, board_b):
-
-    int(board_a)
-    int(board_b)
-
+    assert int(board_a) < 100 or int(board_b) < 100         # check board size (1 - 99)
+    assert int(board_a) > 0 and int(board_b) > 0
     m = []
     for i in range(int(board_b)):
         m.append([])
         for j in range(int(board_a)):
-            m[i].append("_")
+
+            m[i].append("_") if board_b < 10 and board_a < 10 else m[i].append("__")
     return m
 
 
@@ -45,9 +41,14 @@ def ask_board_size():
 
 x = ask_board_size()
 
-try:
 
-    positions_a, positions_b = input("Enter the knight's starting position:").split()
-    starting_position(positions_a, positions_b, x)
-except Exception:
-    print("Invalid dimensions!")
+def ask_first_position():
+    try:
+        positions_a, positions_b = input("Enter the knight's starting position:").split()
+        starting_position(positions_a, positions_b, x)
+    except Exception:
+        print("Invalid dimensions!")
+        ask_first_position()
+
+
+y = ask_first_position()
