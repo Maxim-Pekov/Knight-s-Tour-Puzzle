@@ -2,10 +2,10 @@ def starting_position(positions_a, positions_b, m):
     int(positions_a), int(positions_b)
     assert float(positions_a) > 0 and float(positions_b) > 0, "а и б должно быть больше 0"
 
-    m[len(m) - int(positions_b)][int(positions_a) - 1] = "X" if len(m) < 10 else " x"
+    m[len(m) - int(positions_b)][int(positions_a) - 1] = " x"
 
         # add "-----------------" over the table
-    print(" ---" + "-" * 2 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
+    print(" ---" + "-" * 3 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
 
     x = len(m)
     line_number = []
@@ -14,12 +14,11 @@ def starting_position(positions_a, positions_b, m):
         x -= 1
 
     for i in range(len(m[0])):
-
         # add line "01 02 03 04..." under the table
-        line_number.append(" " + str(i + 1)) if len(m) >= 10 and i < 9 else line_number.append(str(i + 1))
+        line_number.append(" " + str(i + 1))
 
         # add "-----------------" under the table
-    print(" ---" + "-" * 2 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
+    print(" ---" + "-" * 3 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
 
     z = " ".join(line_number)
     print(f"   {z} ") if len(m) < 10 else print(f"    {z} ")
@@ -32,7 +31,7 @@ def starting_board(board_a, board_b):
     for i in range(int(board_b)):
         m.append([])
         for j in range(int(board_a)):
-            m[i].append("_") if int(board_b) < 10 and int(board_a) < 10 else m[i].append("__")
+            m[i].append("__")
     return m
 
 
