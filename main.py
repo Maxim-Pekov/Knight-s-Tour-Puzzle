@@ -1,9 +1,12 @@
+import possible_move
+
+
 def starting_position(positions_a, positions_b, m):
     int(positions_a), int(positions_b)
     assert float(positions_a) > 0 and float(positions_b) > 0, "а и б должно быть больше 0"
 
     m[len(m) - int(positions_b)][int(positions_a) - 1] = " x"
-
+    possible_move.possible_move(positions_a, positions_b, m)
         # add "-----------------" over the table
     print(" ---" + "-" * 3 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
 
