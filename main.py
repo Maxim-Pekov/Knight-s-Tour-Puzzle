@@ -1,64 +1,89 @@
-import possible_move
+import print_board
+import next_moves
 
 
-def starting_position(positions_a, positions_b, m):
-    int(positions_a), int(positions_b)
-    assert float(positions_a) > 0 and float(positions_b) > 0, "а и б должно быть больше 0"
+class ChessBoard():
+    def __init__(self, side_a, side_b):
+        self.side_a = side_a
+        self.side_b = side_b
+        self.board = []
+        self.position_a = 1
+        self.position_b = 1
+        self.count_move = 0
 
-    m[len(m) - int(positions_b)][int(positions_a) - 1] = " x"
-    possible_move.possible_move(positions_a, positions_b, m)
-        # add "-----------------" over the table
-    print(" ---" + "-" * 3 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
+    def check_board_size(self):
+        try:
+            assert int(self.side_a) < 100 and int(self.side_b) < 100
+            assert int(self.side_a) > 0 and int(self.side_b) > 0
+        except Exception:
+            print("Invalid dimensions!")
+            return False
+        return True
 
-    x = len(m)
-    line_number = []
-    for i in range(int(len(m))):
-        print(f' {x}| {" ".join(m[i])} |') if x < 10 and len(m) > 9 else print(f'{x}| {" ".join(m[i])} |')
-        x -= 1
+    def create_board(self):
+        while True:
+            try:
+                self.side_a, self.side_b = input("Enter your board dimensions:").split()
+            except Exception:
+                print("Invalid dimensions!")
+                continue
+            if self.check_board_size():
+                break
 
-    for i in range(len(m[0])):
-        # add line "01 02 03 04..." under the table
-        line_number.append(" " + str(i + 1))
+        for i in range(int(self.side_b)):
+            self.board.append([])
+            for j in range(int(self.side_a)):
+                self.board[i].append("__")
+        while True:
+            try:
+                self.position_a, self.position_b = input("Enter the knight's starting position:").split()
+            except Exception:
+                print("invalid dimensions!")
+                continue
+            if self.check_position():
+                break
+        self.board[len(self.board) - int(self.position_b)][int(self.position_a) - 1] = " x"
 
-        # add "-----------------" under the table
-    print(" ---" + "-" * 3 * len(m[0])) if len(m) < 10 else print("  ---" + "-" * 3 * len(m[0]))
+    def check_position(self):
+        try:
+            assert int(self.position_a) <= int(self.side_a) and int(self.position_b) <= int(self.side_b)
+            assert float(self.position_a) > 0 and float(self.position_b) > 0
+        except Exception:
+            print("Invalid move!")
+            return False
+        return True
 
-    z = " ".join(line_number)
-    print(f"   {z} ") if len(m) < 10 else print(f"    {z} ")
+    def next_move1(self):
 
+        while True:
+            try:
+                a, b = input("Enter your next move:").split()
+                assert int(a) <= int(self.side_a) and int(b) <= int(self.side_b)
+                assert float(a) > 0 and float(b) > 0
 
-def starting_board(board_a, board_b):
-    assert int(board_a) < 100 and int(board_b) < 100  # check board size (1 - 99)
-    assert int(board_a) > 0 and int(board_b) > 0
-    m = []
-    for i in range(int(board_b)):
-        m.append([])
-        for j in range(int(board_a)):
-            m[i].append("__")
-    return m
-
-
-def ask_board_size():
-    try:
-        board_a, board_b = input("Enter your board dimensions:").split()
-        global x
-        x = starting_board(board_a, board_b)
-    except Exception:
-        print("Invalid dimensions!")
-        ask_board_size()
-    return x
-
-
-x = ask_board_size()
-
-
-def ask_first_position():
-    try:
-        positions_a, positions_b = input("Enter the knight's starting position:").split()
-        starting_position(positions_a, positions_b, x)
-    except Exception:
-        print("Invalid dimensions!")
-        ask_first_position()
+            except Exception:
+                print("Invalid move!", end=' ')
+                continue
+            self.board[len(self.board) - int(self.position_b)][int(self.position_a) - 1] = " *"
+            self.position_a, self.position_b = a, b
+            if self.check_position():
+                if next_moves.check_next_move(self.position_a, self.position_b, self.board):
+                    break
+        if next_moves.next_move(self.position_a, self.position_b, board_start.board) == 1:
+            return 1
 
 
-ask_first_position()
+board_start = ChessBoard(1, 1)
+board_start.create_board()
+print_board.print_board(board_start.position_a, board_start.position_b, board_start.board)
+
+while (int(board_start.side_b) * int(board_start.side_a)) > board_start.count_move:
+    board_start.count_move += 1
+    z = board_start.next_move1()
+    if (int(board_start.side_b) * int(board_start.side_a)) == board_start.count_move + 1:
+        print("What a great tour! Congratulations!")
+        break
+    if z == 1:
+        print("No more possible moves!")
+        print(f"Your knight visited {board_start.count_move + 1} squares!")
+        break
